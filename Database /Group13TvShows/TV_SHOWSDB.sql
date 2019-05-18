@@ -28,5 +28,33 @@ CREATE TABLE tblEPISODE_GENRE (EpisodeGenreID INT IDENTITY(1,1) PRIMARY KEY NOT 
                                 EpisodeID INT FOREIGN KEY REFERENCES tblEPISODE (EpisodeID) NOT NULL, 
                                 GenreID INT FOREIGN KEY REFERENCES tblGENRE (GenreID) NOT NULL)
 GO 
-
+CREATE TABLE tblGENDER (GenderID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                        GenderName CHAR(1) NOT NULL)
+GO 
+CREATE TABLE tblPERSON (PersonID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                        PersonFname VARCHAR(30) NOT NULL, 
+                        PersonLname VARCHAR(30) NOT NULL, 
+                        PersonDOB DATE NOT NULL, 
+                        GenderID INT FOREIGN KEY REFERENCES tblGENDER (GenderID) NOT NULL,
+                        PersonBiography VARCHAR(500) NULL, 
+                        PersonPopularity INT NULL)
+GO 
+CREATE TABLE tblCREDIT (CreditID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                        CreditName VARCHAR(50) NOT NULL, 
+                        CreditDescr VARCHAR(150) NULL)
+GO 
+CREATE TABLE tblPERSON_CREDIT_EPISODE (PersonCreditEpisodeID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                                    EpisodeID INT FOREIGN KEY REFERENCES tblEPISODE (EpisodeID) NOT NULL, 
+                                    CreditID INT FOREIGN KEY REFERENCES tblCREDIT (CreditID) NOT NULL, 
+                                    PersonID INT FOREIGN KEY REFERENCES tblPERSON (PersonID) NOT NULL,
+                                    [Character] VARCHAR(50) NOT NULL)
+GO 
+CREATE TABLE tblPLATFORM (PlatformID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                        PlatformName VARCHAR(50) NOT NULL, 
+                        PlatformDescr VARCHAR(150) NOT NULL)
+GO 
+CREATE TABLE tblPLATFORM_EPISODE (PlatformEpisodeID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                                PlatformID INT FOREIGN KEY REFERENCES tblPLATFORM (PlatformID) NOT NULL,
+                                EpisodeID INT FOREIGN KEY REFERENCES tblEPISODE (EpisodeID) NOT NULL)
+GO 
 
