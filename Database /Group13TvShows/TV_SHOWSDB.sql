@@ -57,4 +57,45 @@ CREATE TABLE tblPLATFORM_EPISODE (PlatformEpisodeID INT IDENTITY(1,1) PRIMARY KE
                                 PlatformID INT FOREIGN KEY REFERENCES tblPLATFORM (PlatformID) NOT NULL,
                                 EpisodeID INT FOREIGN KEY REFERENCES tblEPISODE (EpisodeID) NOT NULL)
 GO 
-
+CREATE TABLE tblCUSTOMER (CustomerID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                            CustFname VARCHAR(30) NOT NULL, 
+                            CustLname VARCHAR(30) NOT NULL, 
+                            CustDOB DATE NOT NULL, 
+                            [Address] VARCHAR(50) NOT NULL, 
+                            [State] VARCHAR(50) NOT NULL, 
+                            City VARCHAR(50)NOT NULL, 
+                            PostalCode CHAR(9) NOT NULL)
+GO
+CREATE TABLE tblMEMBERSHIP (MembershipID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                            CustomerID INT FOREIGN KEY REFERENCES tblCUSTOMER NOT NULL, 
+                            MembershipName VARCHAR(50) NOT NULL,
+                            MembershipDescr VARCHAR(150) NOT NULL, 
+                            MembershipPrice NUMERIC(8,2) NOT NULL, 
+                            BeginDate DATETIME NOT NULL, 
+                            EndDate DATETIME NULL)
+GO
+CREATE TABLE tblDOWNLOAD_EPISODE (DownloadEpisodeID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                                PlatformID INT FOREIGN KEY REFERENCES tblPLATFORM (PlatformID) NOT NULL, 
+                                MembershipID INT FOREIGN KEY REFERENCES tblMEMBERSHIP (MembershipID) NOT NULL)
+GO
+CREATE TABLE tblSURVEY (SurveyID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                        SurveyDate DATETIME NOT NULL)
+GO 
+CREATE TABLE tblQUESTION_TYPE (QuestionTypeID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                                QuestionTypeName VARCHAR(50) NOT NULL, 
+                                QuestionTypeDescr VARCHAR(100) NULL)
+GO 
+CREATE TABLE tblQUESTION (QuestionID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                        QuestionTypeID INT FOREIGN KEY REFERENCES tblQUESTION_TYPE NOT NULL, 
+                        QuestionDate DATETIME NOT NULL, 
+                        QuestionName VARCHAR(150) NOT NULL)
+GO
+CREATE TABLE tblSURVEY_QUESTION (SurveyQuestionID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                                SurveyID INT FOREIGN KEY REFERENCES tblSURVEY NOT NULL, 
+                                QuestionID INT FOREIGN KEY REFERENCES tblQUESTION (QuestionID) NOT NULL)       
+GO 
+CREATE TABLE tblCUSTOMER_SURVEY_RESPONSE (CustomerSurveyResponseID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
+                                        CustomerID INT FOREIGN KEY REFERENCES tblCUSTOMER (CustomerID) NOT NULL, 
+                                        SurveyQuestionID INT FOREIGN KEY REFERENCES tblSURVEY_QUESTION (SurveyQuestionID) NOT NULL,
+                                        Response VARCHAR(250) NOT NULL)
+GO                                                                               
